@@ -4,6 +4,7 @@ import { buildCampus } from './campus.js';
 import { initControls, switchView, toggleRoam, setRoamSpeed, updateControls, isRoamingState } from './controls.js';
 import { initInteraction } from './interaction.js';
 import { setupLayers } from './layers.js';
+import { initParticles, updateParticles } from './particles.js';
 import * as THREE from 'three';
 
 // ===== 初始化 =====
@@ -14,6 +15,7 @@ buildCampus();
 initControls();
 initInteraction();
 setupLayers();
+initParticles();
 
 // 隐藏加载画面
 setTimeout(() => {
@@ -81,6 +83,9 @@ function animate(time) {
 
   // 光照过渡
   updateLighting();
+
+  // 粒子浮动
+  updateParticles(time);
 
   // 雕塑自转
   const sculpture = scene.getObjectByProperty('isSculpture', true);
