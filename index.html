@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>树人校园数字孪生系统</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="container"></div>
+
+  <!-- 标题 -->
+  <div id="header">
+    <h1>树人校园数字孪生系统</h1>
+    <span id="fps-display">FPS: 0</span>
+  </div>
+
+  <!-- 操作提示 -->
+  <div id="hint">🖱 左键旋转 · 滚轮缩放 · 右键平移 · 点击建筑查看信息</div>
+
+  <!-- 控制面板 -->
+  <div id="control-panel">
+    <div class="panel-section">
+      <div class="panel-title">视角切换</div>
+      <div class="btn-group">
+        <button class="btn active" data-view="perspective">透视</button>
+        <button class="btn" data-view="birdseye">鸟瞰</button>
+        <button class="btn" data-view="library">图书馆</button>
+        <button class="btn" data-view="gate">校门</button>
+      </div>
+    </div>
+    <div class="panel-section">
+      <div class="panel-title">图层控制</div>
+      <label class="layer-toggle"><input type="checkbox" checked data-layer="buildings" /> 建筑</label>
+      <label class="layer-toggle"><input type="checkbox" checked data-layer="roads" /> 道路</label>
+      <label class="layer-toggle"><input type="checkbox" checked data-layer="vegetation" /> 植被</label>
+    </div>
+    <div class="panel-section">
+      <div class="panel-title">自动漫游</div>
+      <button class="btn" id="roam-toggle">▶ 开始漫游</button>
+      <div class="speed-control">
+        <span>速度</span>
+        <input type="range" id="roam-speed" min="1" max="10" value="5" />
+      </div>
+    </div>
+    <div class="panel-section">
+      <div class="panel-title">环境</div>
+      <button class="btn" id="daynight-toggle">🌙 切换夜晚</button>
+    </div>
+  </div>
+
+  <!-- 信息弹窗 -->
+  <div id="info-modal" class="hidden">
+    <div id="modal-overlay"></div>
+    <div id="modal-content">
+      <button id="modal-close">&times;</button>
+      <h2 id="modal-title"></h2>
+      <p id="modal-desc"></p>
+      <div id="modal-details"></div>
+    </div>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
