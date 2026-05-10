@@ -6,7 +6,7 @@ import { CAMPUS_DATA } from './data.js';
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 let selectedObject = null;
-let originalColor = null;
+let originalEmissive = null;
 
 export function initInteraction() {
   const renderer = getRenderer();
@@ -61,41 +61,47 @@ function highlightBuilding(mesh) {
   clearHighlight();
   selectedObject = mesh;
   if (mesh.material) {
-    originalColor = mesh.material.color.getHex();
-    mesh.material.color.setHex(0x88ccff);
-    mesh.material.emissive = new THREE.Color(0x224466);
-    mesh.material.emissiveIntensity = 0.3;
+    if (Array.isArray(mesh.material)) {
+      mesh.material.forEach(m => {
+        originalEmissive = m.emissive.getHex();
+        m.emissive = new THREE.Color(0x4a7cff);
+        m.emissiveIntensity = 0.3;
+      });
+    } else {
+      originalEmissive = mesh.material.emissive.getHex();
+      mesh.material.emissive = new THREE.Color(0x4a7cff);
+      mesh.material.emissiveIntensity = 0.3;
+    }
   }
 }
 
 function clearHighlight() {
   if (selectedObject && selectedObject.material) {
-    if (originalColor !== null) {
-      selectedObject.material.color.setHex(originalColor);
-      selectedObject.material.emissive = new THREE.Color(0x000000);
+    if (Array.isArray(selectedObject.material)) {
+      selectedObject.material.forEach(m => {
+        m.emissive = new THREE.Color(originalEmissive || 0x000000);
+        m.emissiveIntensity = 0;
+      });
+    } else {
+      selectedObject.material.emissive = new THREE.Color(originalEmissive || 0x000000);
       selectedObject.material.emissiveIntensity = 0;
     }
   }
   selectedObject = null;
-  originalColor = null;
+  originalEmissive = null;
 }
 
 function showBuildingInfo(buildingId) {
   const building = CAMPUS_DATA.buildings.find(b => b.id === buildingId);
   if (!building) return;
 
-  const modal = document.getElementById('info-modal');
   document.getElementById('modal-title').textContent = building.name;
   document.getElementById('modal-desc').textContent = building.info.desc;
+  document.getElementById('modal-floors').textContent = building.info.floors;
+  document.getElementById('modal-area').textContent = building.info.area;
+  document.getElementById('modal-usage').textContent = building.info.用途;
 
-  const detailsEl = document.getElementById('modal-details');
-  detailsEl.innerHTML = `
-    层数：${building.info.floors}<br />
-    面积：${building.info.area}<br />
-    用途：${building.info.用途}
-  `;
-
-  modal.classList.remove('hidden');
+  document.getElementById('info-modal').classList.remove('hidden');
 }
 
 function hideInfo() {

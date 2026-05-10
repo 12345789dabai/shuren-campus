@@ -80,6 +80,14 @@ function animate(time) {
     sculpture.rotation.y += 0.005;
   }
 
+  // 路灯呼吸灯
+  const now = Date.now() * 0.001;
+  scene.traverse(child => {
+    if (child.isPointLight && child.userData.isStreetLight) {
+      child.intensity = 0.8 + Math.sin(now * 0.5 + child.position.x) * 0.2;
+    }
+  });
+
   renderer.render(scene, camera);
 }
 
