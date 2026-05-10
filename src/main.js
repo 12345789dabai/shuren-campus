@@ -15,6 +15,14 @@ initControls();
 initInteraction();
 setupLayers();
 
+// 隐藏加载画面
+setTimeout(() => {
+  document.getElementById('loading-screen').classList.add('fade-out');
+  setTimeout(() => {
+    document.getElementById('loading-screen').style.display = 'none';
+  }, 800);
+}, 600);
+
 // ===== UI 事件绑定 =====
 // 视角切换
 document.querySelectorAll('[data-view]').forEach(btn => {
